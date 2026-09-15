@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * esta mesma US, conforme identificado em cada teste abaixo.
  */
 
-
+/* TESTES RED
 public class AlunoTest {
 
     // LETICIA
@@ -71,6 +71,25 @@ public class AlunoTest {
 
         assertTrue(joao.temDireitoAMaisCursos());
     }
+}*/
+
+// TESTES GREEN
+
+public class AlunoTest {
+
+    // LUCAS
+    // Dado um curso finalizado, E aluno
+    // Quando curso está encerrado, E a média abaixo de 7,0
+    // Então o aluno não tem direito a mais 3 cursos
+    @Test
+    void deveAvaliarMediaInvalidaParaCursoBonus() {
+        var curso = new Curso("Curso Terminado");
+        var joao = new Aluno("Joao");
+
+        curso.finalizar(joao,5.0);
+
+        assertFalse(joao.temDireitoAMaisCursos());
+    }
+
+
 }
-
-
