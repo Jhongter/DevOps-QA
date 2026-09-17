@@ -100,9 +100,5 @@ public class AlunoTest {
         assertFalse(curso.isFinalizado());
         assertFalse(joao.temDireitoAMaisCursos());
     }
-
-
-
-
    
 }
