@@ -136,6 +136,42 @@ public class AlunoTest {
         assertFalse(curso.isFinalizado());
         assertFalse(joao.temDireitoAMaisCursos());
     }
+    
+// =========================================================================================
+    // IZABELLY
+    // Dado um curso finalizado, E aluno
+    // Quando curso está encerrado, E a média é exatamente 7,0
+    // Então o aluno tem direito a mais 3 cursos
+    // =========================================================================================
 
+    // --- RED: média usada (5.0) não é "exatamente 7,0" como o cenário pede -> assert falha ---
+    // @Test
+    // void deveAvaliarMediaLimiteBonus() {
+    //     var curso = novoCurso();
+    //     var joao = novoAluno();
+    //     curso.finalizar(joao, 5.0);
+    //     assertTrue(joao.temDireitoAMaisCursos()); // FALHA: 5.0 < 7.0
+    // }
+
+    // --- GREEN: média corrigida para 7.0 (caso limite exato) -> passa, mas sem refino/@DisplayName ---
+    // @Test
+    // void deveAvaliarMediaLimiteBonus() {
+    //     var curso = novoCurso();
+    //     var joao = novoAluno();
+    //     curso.finalizar(joao, 7.0);
+    //     assertTrue(joao.temDireitoAMaisCursos()); // passa
+    // }
+
+    // --- BLUE: versão final, refatorada com helpers e @DisplayName, mantendo o teste verde ---
+    @Test
+    @DisplayName("IZABELLY - média exatamente 7,0 (caso limite) dá direito a mais 3 cursos")
+    void deveAvaliarMediaLimiteBonus() {
+        var curso = novoCurso();
+        var joao = novoAluno();
+
+        curso.finalizar(joao, 7.0);
+
+        assertTrue(joao.temDireitoAMaisCursos());
+    }
 
 }
