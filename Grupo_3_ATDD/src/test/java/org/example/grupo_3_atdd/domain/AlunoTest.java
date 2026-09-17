@@ -12,8 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * QUERO ter média acima de 7,0
  * PARA ter o direito de realizar mais 3 cursos
  *
- * Cada integrante escreveu um cenário BDD (Given/When/Then) diferente para esta mesma US
- * (LETICIA, LUCAS, JOÃO, IZABELLY). Cada teste abaixo documenta, individualmente, as 3 etapas
+ * Cada teste abaixo documenta, individualmente, as 3 etapas
  * do próprio ciclo TDD (RED -> GREEN -> BLUE): as versões RED e GREEN ficam comentadas logo
  * acima do teste ativo (BLUE), como evidência/histórico de cada integrante.
  */
