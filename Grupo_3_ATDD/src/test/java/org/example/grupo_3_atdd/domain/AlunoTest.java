@@ -28,6 +28,43 @@ public class AlunoTest {
     }
 
     // =========================================================================================
+    // LETICIA
+    // Dado um curso finalizado, E aluno
+    // Quando curso está encerrado, E a média acima de 7,0
+    // Então o aluno tem direito a mais 3 cursos
+    // =========================================================================================
+
+    // --- RED: média usada (6.0) não é "acima de 7,0" como o cenário pede -> assert falha ---
+    // @Test
+    // void deveAvaliarMediaValidaParaCursoBonus() {
+    //     var curso = novoCurso();
+    //     var joao = novoAluno();
+    //     curso.finalizar(joao, 6.0);
+    //     assertTrue(joao.temDireitoAMaisCursos()); // FALHA: 6.0 < 7.0
+    // }
+
+    // --- GREEN: média corrigida para 8.5 (acima de 7,0) -> passa, mas sem refino/@DisplayName ---
+    // @Test
+    // void deveAvaliarMediaValidaParaCursoBonus() {
+    //     var curso = novoCurso();
+    //     var joao = novoAluno();
+    //     curso.finalizar(joao, 8.5);
+    //     assertTrue(joao.temDireitoAMaisCursos()); // passa
+    // }
+
+    // --- BLUE: versão final, refatorada com helpers e @DisplayName, mantendo o teste verde ---
+    @Test
+    @DisplayName("LETICIA - média acima de 7,0 em curso finalizado dá direito a mais 3 cursos")
+    void deveAvaliarMediaValidaParaCursoBonus() {
+        var curso = novoCurso();
+        var joao = novoAluno();
+
+        curso.finalizar(joao, 8.5);
+
+        assertTrue(joao.temDireitoAMaisCursos());
+    }
+
+    // =========================================================================================
     // LUCAS
     // Dado um curso finalizado, E aluno
     // Quando curso está encerrado, E a média abaixo de 7,0
@@ -64,7 +101,6 @@ public class AlunoTest {
         assertFalse(joao.temDireitoAMaisCursos());
     }
 
-
     // =========================================================================================
     // JOÃO
     // Dado um curso não finalizado, E aluno
@@ -100,5 +136,6 @@ public class AlunoTest {
         assertFalse(curso.isFinalizado());
         assertFalse(joao.temDireitoAMaisCursos());
     }
-   
+
+
 }
