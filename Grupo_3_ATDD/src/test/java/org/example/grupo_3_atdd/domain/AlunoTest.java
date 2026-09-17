@@ -28,6 +28,44 @@ public class AlunoTest {
     }
 
     // =========================================================================================
+    // LUCAS
+    // Dado um curso finalizado, E aluno
+    // Quando curso está encerrado, E a média abaixo de 7,0
+    // Então o aluno não tem direito a mais 3 cursos
+    // =========================================================================================
+
+    // --- RED: média usada (8.0) não é "abaixo de 7,0" como o cenário pede -> assert falha ---
+    // @Test
+    // void deveAvaliarMediaInvalidaParaCursoBonus() {
+    //     var curso = novoCurso();
+    //     var joao = novoAluno();
+    //     curso.finalizar(joao, 8.0);
+    //     assertFalse(joao.temDireitoAMaisCursos()); // FALHA: 8.0 >= 7.0
+    // }
+
+    // --- GREEN: média corrigida para 5.0 (abaixo de 7,0) -> passa, mas sem refino/@DisplayName ---
+    // @Test
+    // void deveAvaliarMediaInvalidaParaCursoBonus() {
+    //     var curso = novoCurso();
+    //     var joao = novoAluno();
+    //     curso.finalizar(joao, 5.0);
+    //     assertFalse(joao.temDireitoAMaisCursos()); // passa
+    // }
+
+    // --- BLUE: versão final, refatorada com helpers e @DisplayName, mantendo o teste verde ---
+    @Test
+    @DisplayName("LUCAS - média abaixo de 7,0 em curso finalizado NÃO dá direito a mais 3 cursos")
+    void deveAvaliarMediaInvalidaParaCursoBonus() {
+        var curso = novoCurso();
+        var joao = novoAluno();
+
+        curso.finalizar(joao, 5.0);
+
+        assertFalse(joao.temDireitoAMaisCursos());
+    }
+
+
+    // =========================================================================================
     // JOÃO
     // Dado um curso não finalizado, E aluno
     // Quando o curso não é finalizado, E a média não foi lançada
@@ -62,6 +100,5 @@ public class AlunoTest {
         assertFalse(curso.isFinalizado());
         assertFalse(joao.temDireitoAMaisCursos());
     }
-
-
+   
 }
