@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        // Pasta onde está o projeto Cypress
+        // Pasta onde esta o projeto Maven (pom.xml)
         PROJECT_DIR = 'Grupo_3_ATDD'
     }
 
@@ -21,31 +21,24 @@ pipeline {
         stage('Verificar ambiente') {
             steps {
                 dir("${PROJECT_DIR}") {
-                    bat 'dir'
-                    bat 'node --version'
-                    bat 'npm --version'
+                    bat 'java -version'
+                    bat 'mvnw.cmd -version'
                 }
             }
         }
 
-        stage('Instalar dependencias') {
+        stage('Build') {
             steps {
                 dir("${PROJECT_DIR}") {
-                    script {
-                        if (fileExists('package-lock.json')) {
-                            bat 'npm ci'
-                        } else {
-                            bat 'npm install'
-                        }
-                    }
+                    bat 'mvnw.cmd -B clean package -DskipTests'
                 }
             }
         }
 
-        stage('Executar testes Cypress') {
+        stage('Testes') {
             steps {
                 dir("${PROJECT_DIR}") {
-                    bat 'npx cypress run'
+                    bat 'mvnw.cmd -B test'
                 }
             }
         }
@@ -53,9 +46,9 @@ pipeline {
 
     post {
         always {
-            // Guarda screenshots e videos gerados pelo Cypress
-            archiveArtifacts artifacts: "${PROJECT_DIR}/cypress/screenshots/**, ${PROJECT_DIR}/cypress/videos/**",
-                             allowEmptyArchive: true
+            // Publica os resultados dos testes (JUnit / Surefire)
+            junit allowEmptyResults: true,
+                  testResults: "${PROJECT_DIR}/target/surefire-reports/*.xml"
         }
         success {
             echo 'Pipeline finalizado com sucesso!'
