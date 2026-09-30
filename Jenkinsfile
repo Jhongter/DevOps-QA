@@ -18,6 +18,17 @@ pipeline {
             }
         }
 
+        stage('Preparar Maven Wrapper') {
+            steps {
+                // Cria o arquivo que faltava no repositorio (.mvn/wrapper)
+                writeFile file: "${PROJECT_DIR}/.mvn/wrapper/maven-wrapper.properties",
+                          text: '''wrapperVersion=3.3.2
+distributionType=only-script
+distributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.9.9/apache-maven-3.9.9-bin.zip
+'''
+            }
+        }
+
         stage('Verificar ambiente') {
             steps {
                 dir("${PROJECT_DIR}") {
@@ -46,7 +57,6 @@ pipeline {
 
     post {
         always {
-            // Publica os resultados dos testes (JUnit / Surefire)
             junit allowEmptyResults: true,
                   testResults: "${PROJECT_DIR}/target/surefire-reports/*.xml"
         }
