@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        // Pasta onde está o projeto de testes
+        // Pasta onde está o projeto Cypress
         PROJECT_DIR = 'Grupo_3_ATDD'
     }
 
@@ -18,53 +18,34 @@ pipeline {
             }
         }
 
-        stage('Detectar projeto') {
+        stage('Verificar ambiente') {
             steps {
                 dir("${PROJECT_DIR}") {
-                    sh 'echo "Conteúdo de ${PROJECT_DIR}:" && ls -la'
+                    bat 'dir'
+                    bat 'node --version'
+                    bat 'npm --version'
                 }
             }
         }
 
-        stage('Instalar dependências') {
+        stage('Instalar dependencias') {
             steps {
                 dir("${PROJECT_DIR}") {
                     script {
-                        if (fileExists('pom.xml')) {
-                            sh 'mvn -B -DskipTests clean install'
-                        } else if (fileExists('package.json')) {
-                            sh 'npm install'
-                        } else if (fileExists('requirements.txt')) {
-                            sh '''
-                                python3 -m venv .venv
-                                . .venv/bin/activate
-                                pip install -r requirements.txt
-                            '''
+                        if (fileExists('package-lock.json')) {
+                            bat 'npm ci'
                         } else {
-                            echo 'Nenhum pom.xml, package.json ou requirements.txt encontrado. Pulando instalação.'
+                            bat 'npm install'
                         }
                     }
                 }
             }
         }
 
-        stage('Executar testes') {
+        stage('Executar testes Cypress') {
             steps {
                 dir("${PROJECT_DIR}") {
-                    script {
-                        if (fileExists('pom.xml')) {
-                            sh 'mvn -B test'
-                        } else if (fileExists('package.json')) {
-                            sh 'npm test'
-                        } else if (fileExists('requirements.txt')) {
-                            sh '''
-                                . .venv/bin/activate
-                                pytest --junitxml=report.xml
-                            '''
-                        } else {
-                            echo 'Nenhum tipo de projeto reconhecido. Ajuste este stage com o comando de testes.'
-                        }
-                    }
+                    bat 'npx cypress run'
                 }
             }
         }
@@ -72,9 +53,9 @@ pipeline {
 
     post {
         always {
-            // Publica relatórios JUnit se existirem (Maven, pytest, etc.)
-            junit allowEmptyResults: true,
-                  testResults: '**/target/surefire-reports/*.xml, **/report.xml'
+            // Guarda screenshots e videos gerados pelo Cypress
+            archiveArtifacts artifacts: "${PROJECT_DIR}/cypress/screenshots/**, ${PROJECT_DIR}/cypress/videos/**",
+                             allowEmptyArchive: true
         }
         success {
             echo 'Pipeline finalizado com sucesso!'
