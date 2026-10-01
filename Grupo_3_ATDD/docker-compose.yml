@@ -27,6 +27,12 @@ services:
     container_name: gamificacao-backend
     environment:
       SPRING_PROFILES_ACTIVE: postgres
+      # Dentro do container, "localhost" seria o proprio backend.
+      # O banco precisa ser acessado pelo nome do servico: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/gamificacao
+      SPRING_DATASOURCE_USERNAME: gamificacao
+      SPRING_DATASOURCE_PASSWORD: gamificacao
+      SERVER_PORT: "8081"
     ports:
       - "8081:8081"
     depends_on:
